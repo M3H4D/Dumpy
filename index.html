@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dumpy</title>
+
+    <script src="https://pixijs.download/release/pixi.min.js"></script>
+
+    <style>
+        body {
+          background-image: url('individual pics/background.png');
+          background-repeat: no-repeat;
+          background-size: cover;
+          overflow: hidden;
+        }
+        @font-face{
+            font-family: 'arcade';
+            src: url('alagard.ttf');
+        }
+        #useFont{
+            font-family: 'arcade';
+            
+        }
+    </style>
+</head>
+<body>
+    
+    <script>
+                // SETTING UP PAGE
+                //-----------------
+                let app = new PIXI.Application({   
+                    width: 1500,
+                    height: 720,
+                    transparent: true,
+                    
+                });
+                document.body.appendChild(app.view);
+
+                // CONTAINER AND ARRAY DEFENITIONS
+                //---------------------------------
+                let binobj1 = new PIXI.Container();
+                let binobj2 = new PIXI.Container();
+                let binobj3 = new PIXI.Container();
+                let binobj4 = new PIXI.Container();
+                
+    
+                
+                let colacon = new PIXI.Container();
+                let yogurtcon = new PIXI.Container();
+                let waterbcon = new PIXI.Container();
+                let spooncon = new PIXI.Container();
+                let plastic = [colacon,yogurtcon,waterbcon,spooncon];
+                
+                let newspapercon = new PIXI.Container();
+                let pizzacon = new PIXI.Container();
+                let cardboardcon = new PIXI.Container();
+                let paperbcon = new PIXI.Container();
+                let paper = [newspapercon,pizzacon,cardboardcon,paperbcon];
+                
+                let greenbcon = new PIXI.Container();
+                let brownbcon = new PIXI.Container();
+                let whitebcon = new PIXI.Container();
+                let jamcon = new PIXI.Container();
+                let glass = [greenbcon,brownbcon,whitebcon,jamcon];
+
+
+                let bananacon = new PIXI.Container();
+                let applecon = new PIXI.Container();
+                let eggcon = new PIXI.Container();
+                let flowercon = new PIXI.Container();
+                let bio = [applecon,bananacon,eggcon,flowercon];
+            
+
+                let item = new PIXI.Container();
+                let item2 = new PIXI.Container();
+                let g = getGarbage();
+                item.addChild(g);
+                g = getGarbage();
+                item2.addChild(g);
+
+                let textcon = new PIXI.Container();
+                //points system 
+                let p = 0;
+                let flag = false;
+                let dead = false;
+
+                //important variables
+
+                let gameState = 1;
+                let lvl = 0;
+
+                // DRAWING OBJECTS
+                //-----------------
+                PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
+                const loader = PIXI.Loader.shared;
+                loader.add('tileset','spritesheet.json');
+                loader.load(setup);
+
+                // UPDATE FUNCTION
+                //-----------------
+                app.ticker.add((delta) => update(delta));
+
+
+                function control(obj) {
+                    obj.interactive = true;
+                    obj.buttonMode = true;
+
+
+                    const onDragStart = event => {
+                        obj.data = event.data;
+                        obj.dragging = true;
+                    };
+
+                    const onDragEnd = event => {
+                        delete obj.data;
+                        obj.dragging = false;
+
+                    };
+
+                    const onDragMove = event => {
+                        if (obj.dragging === true){
+                            const newPosition = obj.data.getLocalPosition(obj.parent);
+                            obj.x = newPosition.x;
+                        }
+                    };
+
+                    obj.on('pointerdown', onDragStart)
+                    .on('pointerup', onDragEnd)
+                    .on('pointerupoutside', onDragEnd)
+                    .on('pointermove', onDragMove);
+                }
+
+                function setup(loader, resources) {
+                    if (gameState == 1) {
+
+                        // let bg = new PIXI.Sprite.from('background.png')
+                        // app.stage.addChild(bg);
+
+                        // DUSTBINS
+
+                        //dustbins 1
+                        let bin1 = new PIXI.Sprite.from('dustbin1.png');
+                        bin1.position.set(205,720-210);
+                        bin1.scale.set(7,7);
+                        binobj1.addChild(bin1);
+                        app.stage.addChild(binobj1);
+
+                        //dustbins 2
+                        let bin2 = new PIXI.Sprite.from('dustbin2.png');
+                        bin2.position.set(205 +300 ,720-210);
+                        bin2.scale.set(7,7);
+                        binobj2.addChild(bin2);
+                        app.stage.addChild(binobj2);
+
+                        //dustbins 3
+                        let bin3 = new PIXI.Sprite.from('dustbin3.png');
+                        bin3.position.set(205+300*2,720-202);
+                        bin3.scale.set(7,7);
+                        binobj3.addChild(bin3);
+                        app.stage.addChild(binobj3);
+
+                        //dustbins 4
+                        let bin4 = new PIXI.Sprite.from('dustbin4.png');
+                        bin4.position.set(205+300*3,720-210);
+                        bin4.scale.set(7,7);
+                        binobj4.addChild(bin4);
+                        app.stage.addChild(binobj4);
+
+                        // PLASTIC
+
+                        // cola
+                        let colaspr = new PIXI.Sprite.from('cola.png');
+                        colaspr.position.set(0,0);
+                        colaspr.scale.set(4,4);
+                        colaspr.anchor.set(0.5);
+                        colacon.addChild(colaspr);
+
+                        // yogurt
+                        let yogurtspr = new PIXI.Sprite.from('yogurt.png');
+                        yogurtspr.position.set(0,0);
+                        yogurtspr.scale.set(1.8,1.8);
+                        yogurtspr.anchor.set(0.5);
+                        yogurtcon.addChild(yogurtspr);
+
+                        // waterb
+                        let waterbspr = new PIXI.Sprite.from('waterb.png');
+                        waterbspr.position.set(0,0);
+                        waterbspr.scale.set(3.5,3.5);
+                        waterbspr.anchor.set(0.5);
+                        waterbcon.addChild(waterbspr);
+
+                        // spoon
+                        let spoonspr = new PIXI.Sprite.from('spoon.png');
+                        spoonspr.position.set(0,0);
+                        spoonspr.scale.set(2.5,2.5);
+                        spoonspr.anchor.set(0.5);
+                        spooncon.addChild(spoonspr);
+
+
+                        // PAPER
+
+                        // newspaper
+                        let newspaperspr = new PIXI.Sprite.from('newspaper.png');
+                        newspaperspr.position.set(0,0);
+                        newspaperspr.scale.set(4,4);
+                        newspaperspr.anchor.set(0.5);
+                        newspapercon.addChild(newspaperspr);
+
+                        // pizza
+                        let pizzaspr = new PIXI.Sprite.from('pizza.png');
+                        pizzaspr.position.set(0,0);
+                        pizzaspr.scale.set(3,3);
+                        pizzaspr.anchor.set(0.5);
+                        pizzacon.addChild(pizzaspr);
+                        
+                        // cardboard
+                        let cardboardspr = new PIXI.Sprite.from('cardboard.png');
+                        cardboardspr.position.set(0,0);
+                        cardboardspr.scale.set(3.5,3.5);
+                        cardboardspr.anchor.set(0.5);
+                        cardboardcon.addChild(cardboardspr);
+
+                        // paperb
+                        let paperbspr = new PIXI.Sprite.from('paperb.png');
+                        paperbspr.position.set(0,0);
+                        paperbspr.scale.set(2,2);
+                        paperbspr.anchor.set(0.5);
+                        paperbcon.addChild(paperbspr);
+
+
+                        //BIO
+
+                        // apple
+                        let applespr = new PIXI.Sprite.from('apple.png');
+                        applespr.position.set(0,0);
+                        applespr.scale.set(2.5,2.5);
+                        applespr.anchor.set(0.5);
+                        applecon.addChild(applespr);                    
+
+                        // banana
+                        let bananaspr = new PIXI.Sprite.from('banana.png');
+                        bananaspr.position.set(0,0);
+                        bananaspr.scale.set(3.5,3.5);
+                        bananaspr.anchor.set(0.5);
+                        bananacon.addChild(bananaspr);
+
+                        // egg
+                        let eggspr = new PIXI.Sprite.from('egg.png');
+                        eggspr.position.set(0,0);
+                        eggspr.scale.set(4,4);
+                        eggspr.anchor.set(0.5);
+                        eggcon.addChild(eggspr);
+
+                        // flower
+                        let flowerspr = new PIXI.Sprite.from('flower.png');
+                        flowerspr.position.set(0,0);
+                        flowerspr.scale.set(4,4);
+                        flowerspr.anchor.set(0.5);
+                        flowercon.addChild(flowerspr);
+
+
+                        //Glass
+
+                        // brownb
+                        let brownbspr = new PIXI.Sprite.from('brownb.png');
+                        brownbspr.position.set(0,0);
+                        brownbspr.scale.set(4,4);
+                        brownbspr.anchor.set(0.5);
+                        brownbcon.addChild(brownbspr);                    
+
+                        // greenb
+                        let greenbspr = new PIXI.Sprite.from('greenb.png');
+                        greenbspr.position.set(0,0);
+                        greenbspr.scale.set(4,4);
+                        greenbspr.anchor.set(0.5);
+                        greenbcon.addChild(greenbspr);
+                        
+
+                        // whiteb
+                        let whitebspr = new PIXI.Sprite.from('whiteb.png');
+                        whitebspr.position.set(0,0);
+                        whitebspr.scale.set(4,4);
+                        whitebspr.anchor.set(0.5);
+                        whitebcon.addChild(whitebspr);  
+
+                        // jam
+                        let jamspr = new PIXI.Sprite.from('jam.png');
+                        jamspr.position.set(0,0);
+                        jamspr.scale.set(2.5,2.5);
+                        jamspr.anchor.set(0.5);
+                        jamcon.addChild(jamspr);  
+
+
+                        app.stage.addChild(item);
+                        
+                        
+                    }
+                }
+                    // UPDATE FUNCTION
+                    //-----------------
+                    function update(delta) {
+
+                        if (gameState == 0) {
+                            textcon.interactive = true;
+                            textcon.buttonMode = true;
+                            textcon.on('pointerdown', (event) => { gameState = 1; })
+                            .on('pointerup', onDragEnd)
+                            .on('pointerupoutside', onDragEnd);
+                        }
+
+
+                        if (gameState == 1) {
+                            const mouseCords = app.renderer.plugins.interaction.mouse.global;
+                            item.rotation += 0.03;
+                            item.y += 1;
+                            item.y += lvl;
+                            
+                            if (lvl >= 3) {
+                                item2.rotation += 0.03;
+                                item2.y += 1;
+                                item2.y += lvl;
+                                onCollide(item2);
+                                control(item2);
+                            }
+
+                            onCollide(item);
+                            control(item);
+                            
+                            console.log(p);
+                            if (dead) {
+                                if (lvl <= 1.6) {
+                                    lvl += 0.1;
+                                }
+                                
+                                app.stage.addChild(item);
+                                item.x = getRandom(20,1280);
+                                item.y = 0;
+                                dead = false;
+                            }
+                        }
+
+
+                }
+
+
+                // TEXT
+                //------
+                if (gameState == 0) {
+                    const big = new PIXI.TextStyle({
+                        fontFamily: 'Arial',
+                        fontSize: 60,
+                        fontStyle: 'italic',
+                        fontWeight: 'bold',
+                        align: 'center',
+                        fill: ['#ffffff', '#cfa9fc'], // gradient
+                        stroke: '#4a1850',
+                        strokeThickness: 5,
+                        dropShadow: true,
+                        dropShadowColor: '#000000',
+                        dropShadowBlur: 4,
+                        dropShadowAngle: Math.PI / 6,
+                        dropShadowDistance: 6,
+                        wordWrap: true,
+                        wordWrapWidth: 700,
+                        lineJoin: 'round',
+                    });
+
+                    const small = new PIXI.TextStyle({
+                        fontFamily: 'Arial',
+                        fontSize: 25,
+                        fontStyle: 'italic',
+                        fontWeight: 'bold',
+                        align: 'center',
+                        fill: ['#ffffff', '#cfa9fc'], // gradient
+                        stroke: '#4a1850',
+                        strokeThickness: 5,
+                        dropShadow: true,
+                        dropShadowColor: '#000000',
+                        dropShadowBlur: 4,
+                        dropShadowAngle: Math.PI / 6,
+                        dropShadowDistance: 6,
+                        wordWrap: true,
+                        wordWrapWidth: 700,
+                        lineJoin: 'round',
+                    });
+                    const titleTxt = new PIXI.Text('TRASH GAME', big);
+                    const descpTxt = new PIXI.Text('LEARN TO ORGANIZE YOUR TRASH B)', small);
+                    const enterTxt = new PIXI.Text('CLICK TO PLAY', small);
+                    app.stage.addChild(titleTxt);
+                    app.stage.addChild(descpTxt);
+                    app.stage.addChild(textcon  );
+                    titleTxt.position.set(1280/2 - 215,100);
+                    descpTxt.position.set(1280/2 - 250,190);
+                    enterTxt.position.set(1280/2 - 110,500);
+                    textcon.addChild(enterTxt);
+
+                }
+                if (gameState == 1) {
+                    const style = new PIXI.TextStyle({
+                        dropShadow: true,
+                        dropShadowDistance: 2,
+                        fill: "#262626",
+                        //fontFamily: "\"Lucida Console\", Monaco, monospace",
+                        fontWeight: "bold",
+
+                        fontSize: 45
+                    });
+                    var debug = new PIXI.Text("", style);
+                    var point = new PIXI.Text('POINTS: ', style);
+                    var points = new PIXI.Text('0',style);
+                    //app.stage.addChild(debug);
+                    app.stage.addChild(point);
+                    app.stage.addChild(points);
+                    point.position.set(620,20);
+                    points.position.set(820,20);
+                }
+
+                // FUNCTIONS
+                //-----------
+                //collison
+                function collision(object1, object2) {
+                    const bounds1 = object1.getBounds();
+                    const bounds2 = object2.getBounds();
+
+                    return bounds1.x < bounds2.x + bounds2.width
+                        && bounds1.x + bounds1.width > bounds2.x
+                        && bounds1.y < bounds2.y + bounds2.height
+                        && bounds1.y + bounds1.height > bounds2.y;
+                }
+
+                //check if plastic
+                function isPlastic(obj){
+                    let flag = false; 
+                    
+                    for (let i = 0; i < plastic.length; i++){
+                        if (plastic[i] == obj.getChildAt(0)){
+                            flag = true;
+                        }
+                    }
+
+                    return flag;
+                }
+
+                //check if paper
+                function isPaper(obj){
+                    let flag = false; 
+
+                    for (let i = 0; i < paper.length; i++){
+                        if (paper[i] == obj.getChildAt(0)){
+                            flag = true;
+                        }
+                    }
+
+                    return flag;
+                }
+
+                //check if glass
+                function isglass(obj){
+                    let flag = false; 
+
+                    for (let i = 0; i < glass.length; i++){
+                        if (glass[i] == obj.getChildAt(0)){
+                            flag = true;
+                        }
+                    }
+
+                    return flag;
+                }
+
+                //check if bio
+                function isBio(obj){
+                    let flag = false; 
+
+                    for (let i = 0; i < bio.length; i++){
+                        if (bio[i] == obj.getChildAt(0)){
+                            flag = true;
+                        }
+                    }
+
+                    return flag;
+                }
+
+                //get random number
+                function getRandom(min, max) {
+                    return Math.floor(Math.random() * (max - min) + min);
+                }
+
+                //get random garbage
+                function getGarbage() {
+                    
+                    let i = getRandom(1,5)
+
+                    switch (i) {
+                        case 1:
+                            return plastic[getRandom(0,plastic.length)]
+                            break;
+                        case 2:
+                            return paper[getRandom(0,paper.length)]
+                            break;
+                        case 3:
+                            return glass[getRandom(0,glass.length)]
+                            break;
+                        case 4:
+                            return bio[getRandom(0,bio.length)]
+                            break;
+                        default:
+                    }
+                }
+
+                //check if correct collision
+                function onCollide(o) { 
+                    if (collision(o,binobj1) && !flag){
+                        if (isPaper(o)) {
+                            debug.text = 'PAPER';
+                            p += 1;
+                            points.text = p;
+                        } 
+                        else {
+                            p -= 1;
+                            points.text = p;
+                        }
+                        flag = true;
+                    }
+                    else if (collision(o,binobj2) && !flag) {
+                        if (isPlastic(o)) {
+                            debug.text = 'PLASTIC';
+                            p += 1;
+                            points.text = p;
+                        } 
+                        else {
+                            p -= 1;
+                            points.text = p;
+                        }
+                        flag = true;
+                    }
+                    else if (collision(o,binobj3) && !flag) {
+                        if (isglass(o)) {
+                            debug.text = 'glass';
+                            p += 1;
+                            points.text = p;
+                        } 
+                        else {
+                            p -= 1;
+                            points.text = p;
+                        }
+                        flag = true;
+                    }
+                    else if (collision(o,binobj4) && !flag) {
+                        if (isBio(o)) {
+                            debug.text = 'BIO';
+                            p += 1;
+                            points.text = p;
+                        } 
+                        else {
+                            p -= 1;
+                            points.text = p;
+                        }
+                        flag = true;
+                        
+                    }
+                    if (item.y >= 720) {
+                        p -= 1;
+                        points.text = p;
+                        app.stage.removeChild(o);
+                        item.removeChildren();
+                        g = getGarbage();
+                        item.addChild(g);
+                        flag = false;
+                        dead = true;
+                    }
+                    if (flag == true) {
+                        for (let c = 0; c < 1000; c++) {
+                        
+                            
+                        }
+                        app.stage.removeChild(o);
+                        item.removeChildren();
+                        g = getGarbage();
+                        item.addChild(g);
+                        flag = false;
+                        dead = true;
+                    }
+                }
+
+
+
+    </script>
+    
+</body>
+</html>

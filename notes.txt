@@ -1,0 +1,42 @@
+item touches box kill item make new item
+change points (for testing purpose give everyone sepearae points but later on make function to check if thing is correvt)
+
+
+To-Do list
+
+1. figure out a way to categorize trash --- DONEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
+1. draging system
+1. falling system/randomize
+1.
+2. make a function that checks for collision and gives appropriate dustbin msg --- DONEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
+3. make a point system in the collsion/dabba function --- DONEEEEE
+4. game states
+
+
+
+
+
+items to draw
+
+1. jam ki bottle - glass ---- DONEEEEEEEEEEE
+1. DAROOO KI BOTTLE 3 - glass ---- DONEEEEEEEEEEE
+2. paper - paper ---- DONEEEEEEEEEEE
+3. water bottle - plastic ---- DONEEEEEEEEEEE
+4. cardboard - paper ---- DONEEEEEEEEEEE 
+5. youghurt - plastic ---- DONEEEEEEEEEEE
+6. disposable cutlery - plastic ---- DONEEEEEEEEEEE
+7. egg shells - bio
+8. flower - bio
+
+
+paper plastic glass bio
+4     4       4     4
+
+
+
+bin 1 = paper
+bin 2 = palstic
+bin 3 = glass
+bin 4 = BIO 
+
+make bounds bigger
