@@ -1,5 +1,5 @@
 item touches box kill item make new item
-change points (for testing purpose give everyone sepearae points but later on make function to check if thing is correvt)
+change points (for testing purpose give everyone sepearae points but later on make function to check if thing is correct)
 
 
 To-Do list
@@ -18,15 +18,15 @@ To-Do list
 
 items to draw
 
-1. jam ki bottle - glass ---- DONEEEEEEEEEEE
-1. DAROOO KI BOTTLE 3 - glass ---- DONEEEEEEEEEEE
-2. paper - paper ---- DONEEEEEEEEEEE
-3. water bottle - plastic ---- DONEEEEEEEEEEE
-4. cardboard - paper ---- DONEEEEEEEEEEE 
-5. youghurt - plastic ---- DONEEEEEEEEEEE
-6. disposable cutlery - plastic ---- DONEEEEEEEEEEE
-7. egg shells - bio
-8. flower - bio
+1. Jam Bottle - glass ---- DONEEEEEEEEEEE
+1. Glass Bottle 3 - glass ---- DONEEEEEEEEEEE
+2. Paper - paper ---- DONEEEEEEEEEEE
+3. Water Bottle - plastic ---- DONEEEEEEEEEEE
+4. Cardboard - paper ---- DONEEEEEEEEEEE 
+5. Youghurt - plastic ---- DONEEEEEEEEEEE
+6. Disposable Cutlery - plastic ---- DONEEEEEEEEEEE
+7. Egg Shells - bio
+8. Flower - bio
 
 
 paper plastic glass bio
@@ -38,5 +38,3 @@ bin 1 = paper
 bin 2 = palstic
 bin 3 = glass
 bin 4 = BIO 
-
-make bounds bigger
